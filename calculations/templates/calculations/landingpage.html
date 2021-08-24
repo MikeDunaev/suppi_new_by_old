@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <meta http-equip="Content_type" content="text/html; charset = utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'calculations/css/landingpage.css' %}">
+    <title>Твоя аналитика</title>
+</head>
+<body>
+    <header id="tb-wrapper">
+        <div class="tb-left">
+            <div id="tb-logo" class="tb-text">Твоя аналитика</div>
+        </div>
+        <div class="tb-right">
+            <div id="tb-phone" class="tb-text">+7 915 714 23 67</div>
+            <div class="tb-separator"></div>
+            <a href="{% url 'login' %}" id="tb-login" class="tb-button">Логин</a>
+            <a href="{% url 'register' %}" id="tb-register" class="tb-button">Регистрация</a>
+        </div>
+    </header>
+    <section id="landing">
+        <h1>Получите развернутую аналитику по своему магазину на Ozon</h1>
+        <div class="landing-h2">
+            <h2>Финансовая аналитика</h2>
+            <div class="landing-separator"></div>
+            <h2>Аналитика склада</h2>
+            <div class="landing-separator"></div>
+            <h2>ABC-анализ товаров</h2>
+        </div>
+        <a href="{% url 'register' %}" id="landing-try">Попробовать</a>
+    </section>
+</body>
+</html>

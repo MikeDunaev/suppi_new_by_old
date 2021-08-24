@@ -1,0 +1,125 @@
+html {
+    font-size: 16px;
+}
+body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    font-family: Proxima Nova Condensed Regular;
+}
+#tb-wrapper {
+    width: calc(100% - 4rem);
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    margin: 0 auto;
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+}
+.tb-left {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+.tb-right {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+}
+.tb-button {
+    all: unset;
+    cursor: pointer;
+    font-size: 1.2rem;
+    height: 2rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+#tb-register {
+    background-color: rgba(80,80,240,0.2);
+    transition: background-color 0.3s ease;
+}
+.tb-button:hover {
+    background-color: rgba(80,80,240,0.5);
+}
+#tb-register:hover {
+    background-color: rgba(80,80,240,0.5);
+}
+.tb-text {
+    font-size: 1.5rem;
+    height: 2rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tb-separator {
+    width: 1px;
+    background-color: #000000;
+    margin-left: 1rem;
+}
+
+#landing {
+    width: 100%;
+    height: 60%;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+#landing h1 {
+    font-weight: normal;
+    font-style: normal;
+    font-size: 3rem;
+    text-align: center;
+    margin: 0;
+}
+#landing h2 {
+    font-weight: normal;
+    font-style: normal;
+    font-size: 2rem;
+    text-align: center;
+    margin: 0;
+}
+
+.landing-h2 {
+    display: flex;
+    flex-wrap: nowrap;
+}
+.landing-separator {
+    width: 1px;
+    background-color: #000000;
+    margin: 0 1rem;
+}
+#landing-try {
+    all: unset;
+    cursor: pointer;
+    font-size: 2rem;
+    height: 2rem;
+    width: 13rem;
+    padding: 1rem;
+    margin-left: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(80,80,240,0.2);
+    border-radius: 0.5rem;
+    transition: background-color 0.5s ease;
+}
+#landing-try:hover {
+    box-shadow: 0 0 0.5rem 0 rgba(80,80,240,0.5);
+    background-color: rgba(80,80,240,0.5);
+}
+@font-face {
+	font-family: 'Proxima Nova Condensed Regular';
+	src: url("{% static 'landing_page/fonts/proxima_nova_condensed_regular.woff2' %}") format('woff2'), /* Super Modern Browsers */
+		url("{% static 'landing_page/fonts/proxima_nova_condensed_regular.woff' %}") format('woff'), /* Firefox >= 3.6, any other modern browser */
+		url("{% static 'landing_page/fonts/proxima_nova_condensed_regular.ttf' %}") format('truetype'), /* Safari, Android, iOS */
+		url("{% static 'landing_page/fonts/proxima_nova_condensed_regular.svg#proxima_nova_condensed_regular' %}") format('svg'); /* Chrome < 4, Legacy iOS */
+}

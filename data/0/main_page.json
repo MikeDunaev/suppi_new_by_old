@@ -1,0 +1,38 @@
+[
+   {
+      "ordered_rub": 8238,
+      "ordered_thing": 13,
+      "ordered_percent_rub": -36.0,
+      "ordered_percent_thing": -35.0,
+      "redeemed_rub": 10822,
+      "redeemed_percent_rub": -33.7,
+      "proceeds_rub": 9680.4,
+      "proceeds_percent_rub": -32.8,
+      "cancelled_thing": 1,
+      "cancelled_percent_thing": 0.0,
+      "refund_thing": 0,
+      "refund_percent_thing": 0,
+      "views_thing": 859,
+      "views_percent": -28.7,
+      "to_cart_thing": 49,
+      "to_cart_percent": -15.9
+   },
+   {
+      "ordered_rub": 81598,
+      "ordered_thing": 128,
+      "ordered_percent_rub": -23.5,
+      "ordered_percent_thing": -23.4,
+      "redeemed_rub": 96282,
+      "redeemed_percent_rub": 7.1,
+      "proceeds_rub": 85555.5,
+      "proceeds_percent_rub": 8.5,
+      "cancelled_thing": 6,
+      "cancelled_percent_thing": 0.0,
+      "refund_thing": 2,
+      "refund_percent_thing": -50.0,
+      "views_thing": 4559,
+      "views_percent": -15.7,
+      "to_cart_thing": 599,
+      "to_cart_percent": -15.9
+   }
+]

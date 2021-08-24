@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% load static %}
+{% load to_list %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'users/css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/nav-panel.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/top-panel.css' %}">
+    <title>Профиль</title>
+</head>
+<body>
+
+<!— Верхняя панель —>
+<div class="top-panel">
+    <div class="top-panel__logo">
+        Suppi
+    </div>
+    <a class="top-panel__button top-panel__button" href="{% url 'contact' %}">Обратная связь</a>
+    <a class="top-panel__button top-panel__button" href="{% url 'pay' %}">Оплата</a>
+    <a class="top-panel__button top-panel__button_green" href="{% url 'logout' %}">Выход</a>
+</div>
+
+<!— Боковая панель —>
+<div class="nav-panel__wrapper">
+    <div class="nav-panel__screen">
+        <nav class="nav-panel">
+            <header class="nav-panel__header">
+
+            </header>
+
+            <div class="nav-panel__items">
+                <!— Кнопка: Главная —>
+                <a href="{% url 'home' %}">
+                    <div class="nav-panel__item active">
+<span class="nav-panel__item__svg">
+<svg class="icon" viewBox="0 0 24 24">
+<path d="M5.1,3.9h13.9c0.6,0,1.2,0.5,1.2,1.2v13.9c0,0.6-0.5,1.2-1.2,1.2H5.1c-0.6,0-1.2-0.5-1.2-1.2V5.1
+C3.9,4.4,4.4,3.9,5.1,3.9z"/>
+<path d="M4.2,9.3h15.6"/>
+<path d="M9.1,9.5v10.3"/>
+</svg>
+</span>
+                        <span class="nav-panel__item__text">Главная</span>
+                    </div>
+                </a>
+                <footer class="nav-panel__footer">
+                </footer>
+        </nav>
+    </div>
+    <button class="nav-panel__button_show" »
+    </button>
+</div>
+
+<section class="profile-wrapper">
+    <div class="vertical-col">
+        <article class="about">
+            <h1>Персональные данные</h1>
+            <table class="table-about">
+                <tbody>
+                <tr>
+                    <td>Имя пользователя:</td>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <td>Электронная почта:</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <td>Дата регистрации:</td>
+                    <td>{{ user.date_joined }}</td>
+                </tr>
+                <tr>
+                    <td>Текущий магазин:</td>
+                    <td>{{ current_shop }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article class="shop-add" style="flex-grow: 0;">
+            <h1>Добавление магазина</h1>
+            <form class="form" method="post">
+                {% csrf_token %}
+                {{form.as_p}}
+                <div class="form-button">
+                    <button class="submit-button" type="submit" name="add_shop">Добавить</button>
+                </div>
+            </form>
+        </article>
+    </div>
+    <div class="vertical-col">
+        <article class="shop-choose" style="flex-grow: 1;">
+            <h1>Выберите свой магазин</h1>
+            Доступны: {% to_list shops %}
+            <form class="form" method="post">
+                {% csrf_token %}
+                <select class="select" name="{{shops}}">
+                    {% for shop in shops %}
+                    <option value="{{shop}}">{{shop}}</option>
+                    {%endfor%}
+                </select>
+                <div class="form-button">
+                    <button class="submit-button" type="submit" name="select_shop">Выбрать</button>
+                </div>
+            </form>
+        </article>
+        <article class="shop-add" style="flex-grow: 0;">
+            <h1>Удаление магазина</h1>
+            <form class="form" method="post">
+                {% csrf_token %}
+                <select class="select" name="{{shops}}">
+                    {% for shop in shops %}
+                    <option value="{{shop}}">{{shop}}</option>
+                    {%endfor%}
+                </select>
+                <div class="form-button">
+                    <button class="submit-button" type="submit" name="delete_shop">Удалить</button>
+                </div>
+            </form>
+        </article>
+    </div>
+</section>
+</body>
+<script type="text/javascript" src="{% static 'users/js/nav-panel.js' %}"></script>
+</html>

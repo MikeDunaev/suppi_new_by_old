@@ -1,0 +1,153 @@
+html {
+    font-size: 16px;
+}
+html *,
+html *::before,
+html *::after {
+    box-sizing: inherit;
+}
+body {
+    font-family: "Helvetica Neue","Segoe UI",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #121613;
+ 
+    padding-top: 30px; 
+    padding-right: 30px; 
+    padding-left: 50px; 
+    margin: 0;
+    overflow-x: hidden;
+    background-color: #ffffff;
+}
+
+/**************************************/
+.category-wrapper {
+    width: 100%;
+    padding-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    
+    background-color: #ffffff;
+    /* box-shadow: 0px 0px 4px 4px rgba(12,12,13,0.25); */
+}
+.category-wrapper h1 {
+    padding: 10px 20px;
+    width: 100%;
+    background: linear-gradient(45deg, #efefef, #f9f9f9);
+}
+.category-wrapper h2 {
+    width: 100%;
+    text-align: center;
+}
+.category-wrapper h3 {
+    width: 100%;
+    padding: 10px;
+}
+
+.block-wrapper {
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid #cdcddd;
+    border-radius: 20px;
+}
+
+.monitor-table-wrapper {
+    width: calc(50% - 1rem);
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border: 2px solid #cdcddd;
+    border-radius: 1rem;
+}
+
+/* Оболочки под сролящиеся таблицы */
+.scrolling-v-400 {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+}
+.scrolling-v-800 {
+    width: 100%;
+    max-height: 800px;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+}
+/**************************************/
+
+.sales-up {
+    color: green;
+}
+.sales-up::after {
+    content: " ↑";
+}
+.sales-down {
+    color: red;
+}
+.sales-down::after {
+    content: " ↓";
+}
+
+.remains-loadbar {
+    position: absolute;
+    height: 40%;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    background-color: #3F7BD1;
+}
+.remains-value {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+/* Цвета и значения ABC*/
+.abc_a {
+    background-color: #08F7008A;
+    text-align: center;
+}
+.abc_a::after {
+    content: "A";
+}
+.abc_b {
+    background-color: #FBFB0082;
+    text-align: center;
+}
+.abc_b::after {
+    content: "B";
+}
+.abc_c {
+    background-color: #FF000085;
+    text-align: center;
+}
+.abc_c::after {
+    content: "C";
+}
+
+/* Для таблицы АВС внутри складов */
+.warehouse-last-row {
+    border-bottom: 2px solid #333333;
+}
+.warehouse-headline-row {
+    background-color: #cdcddd;
+    border-top: 2px solid #333333;
+}
+.number-style-r {
+    text-align: right;
+}
+
+.abc-into-warehouse__charts {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+

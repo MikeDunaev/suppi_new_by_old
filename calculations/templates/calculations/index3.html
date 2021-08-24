@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+{% load static %}
+
+{% load define_variable %}
+{% load multiply %}
+{% load abs_filter %}
+{% load exact_division %}
+{% load to_number %}
+{% load increment %}
+
+<html>
+<head>
+    <meta http-equip="Content_type" content="text/html; charset = utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'calculations/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'calculations/css/top-panel.css' %}">
+    <link rel="stylesheet" href="{% static 'calculations/css/nav-panel.css' %}">
+    <link rel="stylesheet" href="{% static 'calculations/css/speedmeter.css' %}">
+    <link rel="stylesheet" href="{% static 'calculations/css/table.css' %}">
+    <title>Твоя аналитика</title>
+</head>
+
+<body>
+
+    <!-- Верхняя панель -->
+    <div class="top-panel">
+        <div class="top-panel__logo">
+            Suppi
+        </div>
+        {% if user.is_authenticated %}
+        <a class="top-panel__button top-panel__button_green" href="{% url 'profile' %}">Профиль</a>
+        <a class="top-panel__button top-panel__button_green" href="{% url 'logout' %}">Выход</a>
+        {% else %}
+        <a class="top-panel__button" href="{% url 'login' %}">Логин</a>
+        <a class="top-panel__button top-panel__button_green" href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
+    </div>
+    
+    <!-- Боковая панель -->
+    <div class="nav-panel__wrapper">
+        <div class="nav-panel__screen">
+            <nav class="nav-panel">
+                <header class="nav-panel__header">
+                    
+                </header>
+
+                <div class="nav-panel__items">
+                    <!-- Кнопка: Главная -->
+                    <a href="#main-anchor">
+                        <div class="nav-panel__item active">
+                            <span class="nav-panel__item__svg">
+                                <svg class="icon" viewBox="0 0 24 24" >
+                                    <path  d="M5.1,3.9h13.9c0.6,0,1.2,0.5,1.2,1.2v13.9c0,0.6-0.5,1.2-1.2,1.2H5.1c-0.6,0-1.2-0.5-1.2-1.2V5.1
+                                        C3.9,4.4,4.4,3.9,5.1,3.9z"/>
+                                    <path  d="M4.2,9.3h15.6"/>
+                                    <path  d="M9.1,9.5v10.3"/>
+                                </svg>
+                            </span>
+                            <span class="nav-panel__item__text">Главная</span>
+                        </div>
+                    </a>
+
+                    <!-- Кнопка: Аналитика складов -->
+                    <a href="#warehouse-anchor" class="nav-panel__item" name="Аналитика складов">
+                        <div class="nav-panel__item">
+                            <span class="nav-panel__item__svg">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path  d="M3.4,11.9l8.8,4.4l8.4-4.4"/>
+                                    <path  d="M3.4,16.2l8.8,4.5l8.4-4.5"/>
+                                    <path  d="M3.7,7.8l8.6-4.5l8,4.5l-8,4.3L3.7,7.8z"/>
+                                </svg>
+                            </span>
+                            <span class="nav-panel__item__text">Аналитика складов</span>
+                        </div>
+                    </a>
+
+                    <!-- Кнопка: Аналитика продаж -->
+                    <a href="#sales-anchor" class="nav-panel__item" name="Аналитика продаж">
+                        <div class="nav-panel__item">
+                            <span class="nav-panel__item__svg">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path  d="M6.7,4.8h10.7c0.3,0,0.6,0.2,0.7,0.5l2.8,7.3c0,0.1,0,0.2,0,0.3v5.6c0,0.4-0.4,0.8-0.8,0.8H3.8
+                                    C3.4,19.3,3,19,3,18.5v-5.6c0-0.1,0-0.2,0.1-0.3L6,5.3C6.1,5,6.4,4.8,6.7,4.8z"/>
+                                    <path  d="M3.4,12.9H8l1.6,2.8h4.9l1.5-2.8h4.6"/>
+                                </svg>
+                            </span>
+                            <span class="nav-panel__item__text">Аналитика продаж</span>
+                        </div>
+                    </a>
+                </div>
+
+                <footer class="nav-panel__footer">
+                    
+                </footer>
+            </nav>
+        </div>
+        <button class="nav-panel__button_show">></button>
+    </div>
+
+    <header class="header">
+
+    </header>
+    <!-- Контент -->
+    <section id="main-anchor" class="category-wrapper">
+        <h1>Главная</h1>
+
+        <h2>Мониторинг главных показателей</h2>
+        <article class="monitor-table-wrapper">
+            <h2>Сегодня</h2>
+            <table class="table-view">
+                <thead>
+                    <th style="width: 32%;">Характеристика</th>
+                    <th style="width: 12%;">%</th>
+                    <th style="width: 22%;"></th>
+                    <th style="width: 12%;">%</th>
+                    <th style="width: 22%;"></th>
+                </thead>
+                <tbody>
+                {% for item in final_main_page_day %}
+                <tr>
+                    <td>Заказано</td>
+
+                    {% if item.ordered_percent_rub < 0 %}
+                    <td class="sales-down">{%abs_num item.ordered_percent_rub%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.ordered_percent_rub%}</td>
+                    {%endif%}
+
+                    <td>{{item.ordered_rub}} ₽</td>
+
+                    {% if item.ordered_percent_rub < 0 %}
+                    <td class="sales-down">{%abs_num item.ordered_percent_rub%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.ordered_percent_rub%}</td>
+                    {%endif%}
+
+                    <td>{{item.ordered_thing}} шт.</td>
+                </tr>
+                <tr>
+                    <td>Отмены</td>
+                    {% if item.cancelled_percent_thing < 0 %}
+                    <td class="sales-down">{%abs_num item.cancelled_percent_thing%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.cancelled_percent_thing%}</td>
+                    {%endif%}
+                    <td>{{item.cancelled_thing}} шт.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Возвраты</td>
+                    {% if item.refund_percent_thing < 0 %}
+                    <td class="sales-down">{%abs_num item.refund_percent_thing%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.refund_percent_thing%}</td>
+                    {%endif%}
+                    <td>{{item.refund_thing}} шт.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Просмотры</td>
+                    {% if item.views_percent < 0 %}
+                    <td class="sales-down">{%abs_num item.views_percent%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.views_percent%}</td>
+                    {%endif%}
+                    <td>{{item.views_thing}} чел.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>В корзину добавлено</td>
+                    {% if item.to_cart_percent < 0 %}
+                    <td class="sales-down">{%abs_num item.to_cart_percent%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.to_cart_percent%}</td>
+                    {%endif%}
+                    <td>{{item.to_cart_thing}} чел.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </article>
+        <article class="monitor-table-wrapper">
+            <h2>За неделю</h2>
+            <table class="table-view">
+                <thead>
+                    <th style="width: 32%;">Характеристика</th>
+                    <th style="width: 12%;">%</th>
+                    <th style="width: 22%;"></th>
+                    <th style="width: 12%;">%</th>
+                    <th style="width: 22%;"></th>
+                </thead>
+                <tbody>
+                {% for item in final_main_page_week %}
+                <tr>
+                    <td>Заказано</td>
+
+                    {% if item.ordered_percent_rub < 0 %}
+                    <td class="sales-down">{%abs_num item.ordered_percent_rub%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.ordered_percent_rub%}</td>
+                    {%endif%}
+
+                    <td>{{item.ordered_rub}} ₽</td>
+
+                    {% if item.ordered_percent_rub < 0 %}
+                    <td class="sales-down">{%abs_num item.ordered_percent_rub%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.ordered_percent_rub%}</td>
+                    {%endif%}
+
+                    <td>{{item.ordered_thing}} шт.</td>
+                </tr>
+                <tr>
+                    <td>Отмены</td>
+                    {% if item.cancelled_percent_thing < 0 %}
+                    <td class="sales-down">{%abs_num item.cancelled_percent_thing%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.cancelled_percent_thing%}</td>
+                    {%endif%}
+                    <td>{{item.cancelled_thing}} шт.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Возвраты</td>
+                    {% if item.refund_percent_thing < 0 %}
+                    <td class="sales-down">{%abs_num item.refund_percent_thing%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.refund_percent_thing%}</td>
+                    {%endif%}
+                    <td>{{item.refund_thing}} шт.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Просмотры</td>
+                    {% if item.views_percent < 0 %}
+                    <td class="sales-down">{%abs_num item.views_percent%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.views_percent%}</td>
+                    {%endif%}
+                    <td>{{item.views_thing}} чел.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>В корзину добавлено</td>
+                    {% if item.to_cart_percent < 0 %}
+                    <td class="sales-down">{%abs_num item.to_cart_percent%}</td>
+                    {% else %}
+                    <td class="sales-up">{% abs_num item.to_cart_percent%}</td>
+                    {%endif%}
+                    <td>{{item.to_cart_thing}} чел.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </article>
+        <article class="monitor-table-wrapper">
+            <h2>За прошедшую неделю</h2>
+            <table class="table-view">
+                <thead>
+                    <th style="width: 32%;">Характеристика</th>
+                    <th style="width: 34%;">%</th>
+                    <th style="width: 34%;">₽</th>
+                </thead>
+                <tbody>
+                {% for item in final_main_page_week %}
+                    <tr>
+                        <td>Выкуплено</td>
+
+                        {% if item.redeemed_percent_rub < 0 %}
+                        <td class="sales-down">{%abs_num item.redeemed_percent_rub%}</td>
+                        {% else %}
+                        <td class="sales-up">{% abs_num item.redeemed_percent_rub%}</td>
+                        {%endif%}
+
+                        <td>{{item.redeemed_rub}} ₽</td>
+                    </tr>
+                    <tr>
+                        <td>Выручка</td>
+                        
+                        {% if item.proceeds_percent_rub < 0 %}
+                        <td class="sales-down">{%abs_num item.proceeds_percent_rub%}</td>
+                        {% else %}
+                        <td class="sales-up">{% abs_num item.proceeds_percent_rub%}</td>
+                        {%endif%}
+
+                        <td>{{item.proceeds_rub}} ₽</td>
+                    </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </article>
+        <article class="block-wrapper">
+            <h2>В следующие 14 дней товар закончится на следующих складах:</h2>
+            <div class="scrolling-v-400">
+                <table class="table-view th-fixed">
+                    <thead>
+                        <tr>
+                            <th style="width: 16%;">Склад</th>
+                            <th style="width: 37%;">Товар</th>
+                            <th style="width: 15%;">Артикул</th>
+                            <th style="width: 15%;">Остаток сейчас</th>
+                            <th style="width: 17%;" class="days-sort">Закончится через (дн)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%for item in supplies_info%}
+                    {% to_number item.days_left as days_left %}
+                    {% if days_left < 15 or days_left.0 == "Закончился" or days_left.0 == "Закончился и нет продаж" or days_left.0 == "Нет продаж"%}
+                        <tr>
+                            <td>
+                                <div class="table-view_long-text">{{item.warehouse}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.product}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.sku}}</div></td>
+                            <td>
+                                <div class="table-view_long-text">{{item.remains}}</div>
+                            </td>
+                            <td class="days-left-colored">
+                                <div class="table-view_value">{{item.days_left}}</div>
+                            </td>
+                        </tr>
+                    {%endif%}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+
+    <section id="warehouse-anchor" class="category-wrapper">
+        <h1>Аналитика складов</h1>
+        <article class="block-wrapper">
+            <h2>Дней до обнуления осталось</h2>
+            <div class="scrolling-v-400">
+                <table class="table-view th-fixed">
+                    <thead>
+                        <tr>
+                            <th style="width: 16%;">Склад</th>
+                            <th style="width: 37%;">Товар</th>
+                            <th style="width: 15%;">Артикул</th>
+                            <th style="width: 15%;">Остаток сейчас</th>
+                            <th style="width: 17%;" class="days-sort">Закончится через (дн)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%for item in supplies_info%}
+                        <tr>
+                            <td>
+                                <div class="table-view_long-text">{{item.warehouse}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.product}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.sku}}</div>
+                            </td>
+                            <td style="position: relative;">
+                                {% if item.remains > 100 %}
+                                <div class="remains-loadbar" style="width: 100%;"></div>
+                                {%else%}
+                                <div class="remains-loadbar" style="width: {{item.remains}}%;"></div>
+                                {% endif %}
+                                <div class="remains-value">{{item.remains}}</div>
+                            </td>
+                            <td class="days-left-colored">
+                                <div class="table-view_value">{{item.days_left}}</div>
+                            </td>
+                        </tr>
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="block-wrapper">
+            <h2>Скорость продаж</h2>
+            <div class="scrolling-v-400">
+                <table id="speed-good" class="table-view th-fixed table_sort">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Склад</th>
+                            <th style="width: 40%;">Товар</th>
+                            <th style="width: 15%;">Артикул</th>
+                            <th style="width: 15%;">Средняя скорость</th>
+                            <th style="width: 15%;">Скорость продаж</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for item in supplies_info%}
+                        <tr>
+                            <td>
+                                <div class="table-view_long-text">{{item.warehouse}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.product}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.sku}}</div>
+                            </td>
+                            <td class="speed-value" style="text-align: center;">
+                                <div class="speedmeter">
+                                    <svg class="svg-speedmeter" viewBox="-100 -100 200 100">
+                                        <g class="scale">
+                                            <circle r="85" cx="0" fill="none" stroke-width="20" stroke="red" />
+                                            <circle r="85" cx="0" fill="none" stroke-width="20" stroke="yellow" stroke-dasharray="100 300" stroke-dashoffset="50" />
+                                            <circle r="85" cx="0" fill="none" stroke-width="20" stroke="green" stroke-dasharray="100 300" stroke-dashoffset="-50" />
+                                        </g>
+                                        <g class="needle" transform="rotate(-90)">
+                                            <circle r="15" cy="-15" />
+                                            <path d="M-15,-15 0,-100 15,-15" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                {{item.total_product_selling_speed}}
+                            </td>
+                            <td class="speed-value" style="text-align: center;">
+                                <div class="speedmeter">
+                                    <svg class="svg-speedmeter" viewBox="-100 -100 200 100">
+                                        <g class="scale">
+                                            <circle r="85" cx="0" fill="none" stroke-width="20" stroke="red" />
+                                            <circle r="85" cx="0" fill="none" stroke-width="20" stroke="yellow" stroke-dasharray="100 300" stroke-dashoffset="50" />
+                                            <circle r="85" cx="0" fill="none" stroke-width="20" stroke="green" stroke-dasharray="100 300" stroke-dashoffset="-50" />
+                                        </g>
+                                        <g class="needle" transform="rotate(-90)">
+                                            <circle r="15" cy="-15" />
+                                            <path d="M-15,-15 0,-100 15,-15" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                {{item.selling_speed}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+
+    <section id="sales-anchor" class="category-wrapper">
+        <h1> Аналитика продаж</h1>
+
+        <article class="block-wrapper">
+            <h2>Общий товарный анализ</h2>
+            <div id="abc-goods__piechart" style="width: 100%; height: 300px;"></div>
+            <div class="scrolling-v-400">
+                <table id="abc-goods" class="table-view th-fixed">
+                    <thead>
+                        <tr>
+                            <th id="abc-goods_name" style="width: 50%;">Товар</th>
+                            <th id="abc-goods_art" style="width: 13%;">Артикул</th>
+                            <th id="abc-goods_count" style="width: 12%;">Куплено (шт)</th>
+                            <th id="abc-goods_revenue" style="width: 10%;">Выручка</th>
+                            <th id="abc-goods_perc" style="width: 5%;">%</th>
+                            <th id="abc-goods_abc" style="width: 10%;">ABC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% define amount_of_non_unique_warehouses as num%}
+                    {% for item in abc %}
+                        {% if forloop.counter0 < num %}
+                        <tr>
+                            <td>
+                                <div class="table-view_long-text">{{item.product}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.offer_id}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.purchased_product}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.proceeds_product}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.proceeds_product_percent}}</div>
+                            </td>
+
+                            {% if item.abc_products == "A" %}
+                            <td class="abc_a"></td>
+                            {% elif item.abc_products == "B" %}
+                            <td class="abc_b"></td>
+                            {% elif item.abc_products == "C" %}
+                            <td class="abc_c"></td>
+                            {% endif %}
+
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="block-wrapper">
+            <h2>Продажи внутри складов</h2>
+            <div id="abc-into-warehouse__charts" class="abc-into-warehouse__charts"></div>
+            <div class="scrolling-v-400">
+                <table id="abc-into-warehouse" class="table-view th-fixed">
+                    <thead>
+                        <tr>
+                            <th id="abc-into-warehouse_warehouse" style="width: 10%;">Склад</th>
+                            <th id="abc-into-warehouse_name" style="width: 40%;">Товар</th>
+                            <th id="abc-into-warehouse_art" style="width: 13%;">Артикул</th>
+                            <th id="abc-into-warehouse_count" style="width: 12%;">Куплено (шт)</th>
+                            <th id="abc-into-warehouse_revenue" style="width: 10%;">Выручка</th>
+                            <th id="abc-into-warehouse_perc" style="width: 5%;">%</th>
+                            <th id="abc-into-warehouse_abc" style="width: 10%;" colspan="2">ABC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%for item in abc%}
+                        <tr>
+                            {% if item.abc_warehouse == "A" %}
+                            <td class="abc_a">
+                                <div class="table-view_long-text">{{item.warehouse}}</div>
+                            </td>
+                            {% elif item.abc_warehouse == "B" %}
+                            <td class="abc_b">
+                                <div class="table-view_long-text">{{item.warehouse}}</div>
+                            </td>
+                            {% elif item.abc_warehouse == "C" %}
+                            <td class="abc_c">
+                                <div class="table-view_long-text">{{item.warehouse}}</div>
+                            </td>
+                            {% endif %}
+
+                            <td>
+                                <div class="table-view_long-text">{{item.product}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.offer_id}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.purchased_product_warehouse}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.proceeds_product_warehouse}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.proceeds_product_warehouse_percent}}</div>
+                            </td>
+                            
+                            {% if item.abc_product_warehouse == "A" %}
+                            <td class="abc_a"></td>
+                            {% elif item.abc_product_warehouse == "B" %}
+                            <td class="abc_b"></td>
+                            {% elif item.abc_product_warehouse == "C" %}
+                            <td class="abc_c"></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="block-wrapper">
+            <h2>Общий складской анализ</h2>
+            <div id="abc-warehouse__piechart" style="width: 100%; height: 300px;"></div>
+            <div class="scrolling-v-400">
+                <table id="abc-warehouse" class="table-view th-fixed">
+                    <thead>
+                    <tr>
+                        <th id="abc-warehouse_warehouse" style="width: 63%;">Склад</th>
+                        <th id="abc-warehouse_count" style="width: 12%;">Куплено (шт)</th>
+                        <th id="abc-warehouse_revenue" style="width: 10%;">Выручка</th>
+                        <th id="abc-warehouse_perc" style="width: 5%;">%</th>
+                        <th id="abc-warehouse_abc" style="width: 10%;">ABC</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% define "" as warehouse%}
+                        {%for item in abc%}
+                            {% if item.warehouse != warehouse %}
+                            {% define item.warehouse as warehouse%}
+                        <tr>
+                            <td>
+                                <div class="table-view_long-text">{{item.warehouse}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.purchased_warehouse}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.proceeds_warehouse}}</div>
+                            </td>
+                            <td>
+                                <div class="table-view_long-text">{{item.proceeds_warehouse_percent}}</div>
+                            </td>
+                            {% if item.abc_warehouse == "A" %}
+                            <td class="abc_a"></td>
+                            {% elif item.abc_warehouse == "B" %}
+                            <td class="abc_b"></td>
+                            {% elif item.abc_warehouse == "C" %}
+                            <td class="abc_c"></td>
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+
+    <script type="text/javascript" src="{% static 'calculations/js/table-sort.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calculations/js/mega-sort-abc.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calculations/js/days-sort.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calculations/js/days-left-color.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calculations/js/nav-panel.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calculations/js/speedmeter.js' %}"></script>
+    <!-- google charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="{% static 'calculations/js/chartABCGoods.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calculations/js/chartABCIntoWarehouse.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calculations/js/chartABCWarehouse.js' %}"></script>
+
+</body>

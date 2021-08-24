@@ -1,0 +1,51 @@
+/* Стили для таблиц */
+.table-view {
+    margin: 0;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+.table_sort th {
+    cursor: pointer;
+}
+.table-view th {
+    background-color: #BBDDFF;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #000000;
+    height: 50px;
+    padding: 12px 10px;
+}
+.table-view td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #ced2d6;
+    height: 49px;
+    position: relative;
+}
+.table-view_long-text {
+    width: 100%;
+    padding: 12px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.table-view_long-text:hover {
+    min-height: 100%;
+    white-space: normal;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ced2d6;
+    z-index: 5;
+}
+.table-view_value {
+    text-align: center;
+}
+
+.th-fixed thead th {
+    top: 0px;
+    z-index: 10;
+    position: sticky;
+} 
